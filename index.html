@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Goby</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./static/styles.css?v=3" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="background-shape"></div>
+  <main class="container">
+    <header class="panel header-panel">
+      <div class="brand-row">
+        <img class="brand-logo" src="./GOBY MARCA REGISTRADA.png" alt="Logo Goby" onerror="this.onerror=null;this.src='./static/logo-goby.svg';" />
+        <div class="brand-copy">
+          <h1>Seguimiento implementacion filtros</h1>
+          <p>Carga el Excel del mes para consolidar historicos y generar las graficas del reporte.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="panel upload-panel">
+      <form id="uploadForm">
+        <label for="reportMonth">Mes</label>
+        <select id="reportMonth" required>
+          <option value="01">Enero</option>
+          <option value="02">Febrero</option>
+          <option value="03">Marzo</option>
+          <option value="04">Abril</option>
+          <option value="05">Mayo</option>
+          <option value="06">Junio</option>
+          <option value="07">Julio</option>
+          <option value="08">Agosto</option>
+          <option value="09">Septiembre</option>
+          <option value="10">Octubre</option>
+          <option value="11">Noviembre</option>
+          <option value="12">Diciembre</option>
+        </select>
+        <label for="baseClientes">Clientes</label>
+        <input type="number" id="baseClientes" min="0" step="1" value="55" required />
+        <label for="excelFile">Archivo Excel</label>
+        <input type="file" id="excelFile" name="file" accept=".xlsx,.xlsm,.xls" required />
+        <button type="submit">Procesar</button>
+        <button type="button" id="downloadPdfBtn" disabled>Descargar PDF</button>
+        <button type="button" id="clearStorageBtn" class="clear-btn">Limpiar</button>
+      </form>
+      <div id="messages"></div>
+    </section>
+
+    <section class="grid">
+      <article class="panel chart-half">
+        <h2>Clientes totales vs clientes con pedido</h2>
+        <div id="grafica1" class="chart"></div>
+      </article>
+
+      <article class="panel chart-half">
+        <h2>Total de productos por mes</h2>
+        <div id="grafica2" class="chart"></div>
+      </article>
+
+      <article class="panel chart-large">
+        <h2>Cantidad vendida por referencia</h2>
+        <div id="grafica3" class="chart"></div>
+      </article>
+
+      <article class="panel chart-large">
+        <h2>Total de unidades por cliente del mes</h2>
+        <div id="tablaContainer"></div>
+      </article>
+
+      <article class="panel chart-large">
+        <h2>Comparativa de empresas por mes</h2>
+        <div id="tablaComparativaContainer"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="./static/app.js"></script>
+</body>
+</html>
