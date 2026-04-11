@@ -491,7 +491,7 @@ function renderChart2(history) {
 }
 
 function renderChart3(currentMonthData) {
-	const entries = Object.entries(currentMonthData.vendidosPorReferencia || {})
+	let entries = Object.entries(currentMonthData.vendidosPorReferencia || {})
 		.map(([referencia, total]) => ({ referencia, total }))
 		.sort((a, b) => b.total - a.total);
 
@@ -500,15 +500,25 @@ function renderChart3(currentMonthData) {
 		return;
 	}
 
+	// Limitar a 20 referencias principales y agrupar el resto en "Otros"
+	const TOP_REFERENCES = 20;
+	const topEntries = entries.slice(0, TOP_REFERENCES);
+	const otherEntries = entries.slice(TOP_REFERENCES);
+
+	if (otherEntries.length > 0) {
+		const otherTotal = otherEntries.reduce((sum, item) => sum + item.total, 0);
+		topEntries.push({ referencia: "Otros", total: otherTotal });
+	}
+
 	Plotly.newPlot(
 		chart3El,
 		[
 			{
-				x: entries.map((item) => item.referencia),
-				y: entries.map((item) => item.total),
+				x: topEntries.map((item) => item.referencia),
+				y: topEntries.map((item) => item.total),
 				type: "bar",
 				marker: {
-					color: entries.map((_, idx) => {
+					color: topEntries.map((_, idx) => {
 						const palette = [
 							getThemeColor("--chart-1", "#2d6cdf"),
 							getThemeColor("--chart-2", "#f08c2e"),
